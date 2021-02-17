@@ -8,6 +8,7 @@ public class Product extends Box{
     private int global_y;
     private int global_z;
     private int volume;
+    private Volume objectVolume;
 
     public Product(long id, int sizeX, int sizeY, int sizeZ) {
         super(id, sizeX, sizeY, sizeZ);
@@ -101,6 +102,14 @@ public class Product extends Box{
     public String toString() {
         return "Product [global_x=" + global_x + ", global_y=" + global_y + ", global_z=" + global_z + ", placed="
                 + placed + ", " + super.toString() + "]";
+    }
+
+    public Volume getObjectVolume() {
+        return objectVolume;
+    }
+
+    public void setObjectVolume(Volume objectVolume) {
+        this.objectVolume = objectVolume;
     }
 
     

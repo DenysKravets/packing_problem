@@ -2,6 +2,7 @@ package ua.lviv.packing;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import java.util.Comparator;
 
 import ua.lviv.packing.Entity.Volume;
@@ -23,14 +24,17 @@ public class Main {
         //Testing 
         //Setting up test subjects XD
         ArrayList<Product> products = new ArrayList<>();
-        products.add(new Product(1, 1, 1, 1));
-        products.add(new Product(1, 1, 1, 1));
-        products.add(new Product(1, 1, 1, 1));
-        products.add(new Product(1, 1, 1, 1));
-        products.add(new Product(1, 1, 1, 1));
-        products.add(new Product(1, 1, 1, 1));
-        products.add(new Product(1, 1, 1, 1));
-        products.add(new Product(1, 1, 1, 1));
+        products.add(new Product(1, 2, 2, 2));
+        products.add(new Product(1, 2, 2, 2));
+        products.add(new Product(1, 2, 2, 2));
+        products.add(new Product(1, 2, 2, 2));
+        products.add(new Product(1, 2, 2, 2));
+        products.add(new Product(1, 2, 2, 2));
+        products.add(new Product(1, 2, 2, 2));
+        products.add(new Product(1, 2, 2, 2));
+        products.add(new Product(1, 2, 2, 2));
+        products.add(new Product(1, 2, 2, 2));
+        
         //I artificially set coordinates so that it itercepts with a volume
         // Product productTest = new Product(1, 1, 1, 1);
         // productTest.setGlobal_z(4);
@@ -40,13 +44,13 @@ public class Main {
         Orderline orderline = new Orderline(1, products);
 
         ArrayList<Product> products2 = new ArrayList<>();
-        products2.add(new Product(2, 2, 2, 2));
-        products2.add(new Product(2, 2, 2, 2));
+        products2.add(new Product(2, 4, 4, 4));
+        products2.add(new Product(2, 4, 4, 4));
         Orderline orderline2 = new Orderline(2, products2);
 
         ArrayList<Product> products3 = new ArrayList<>();
-        products3.add(new Product(3, 3, 3, 3));
-        products3.add(new Product(3, 3, 3, 3));
+        products3.add(new Product(3, 6, 6, 6));
+        products3.add(new Product(3, 6, 6, 6));
         Orderline orderline3 = new Orderline(3, products3);
 
         ArrayList<Orderline> orderlines = new ArrayList<>();
@@ -56,13 +60,11 @@ public class Main {
 
         setOrderlines(orderlines);
         
-        System.out.println(getOrderlines());
+        //Sort by volume
         Orderlines.sortByVolume();
-        System.out.println(getOrderlines());
-        System.out.println("-------------------------------------------");
 
         //Actual working code
-        mainCase = new Case(1, 7, 3, 3);
+        mainCase = new Case(1, 14, 14, 14);
         Volume volume = new Volume(0, 0, 0, mainCase.getSizeX(), mainCase.getSizeY(), mainCase.getSizeZ());
 
         //Set initial product
@@ -90,23 +92,52 @@ public class Main {
         }
         //One volume can contain only one product
         //So we set it up
+        //Edit:
+        //and vice versa so we can add volume to
+        //product, they now know about each other XD
         volume.setProduct(product);
+        product.setObjectVolume(volume);
+        //add product to the array so that it actually
+        //places new products
+        productsToBeIterated.add(product);
+
+        //Start iteration
+        while(productsToBeIterated.size() != 0) {
+            ArrayList<Product> innerProductsToBeIterated = (ArrayList<Product>) productsToBeIterated.clone();
+            productsToBeIterated.clear();
+            System.out.println("gay1");
+            System.out.println(innerProductsToBeIterated);
+            innerProductsToBeIterated.forEach(iterateProduct -> {
+                System.out.println("gay2");
+                algorithm(iterateProduct);
+            });
+
+        };
 
         //Just cheking
-        System.out.println(product);
+        //System.out.println(product);
 
-        //Diving into recursion
-        algorithm(volume);
+        
 
+        //Let's see the result
         drawLine();
         showAllProducts();
 
 
     }
 
+    //The main case
+    //for now only one
     public static Case mainCase = null;
+    //products that should place new products 
+    //are stored here and are changed every iteration
+    public static ArrayList<Product> productsToBeIterated = new ArrayList<>();
 
-    public static boolean algorithm(Volume volume) {
+    public static boolean algorithm(Product product) {
+
+        System.out.println("gay3");
+
+        Volume volume = product.getObjectVolume();
 
         //Iterating over 3 directions
         //in each direction I can place only one volume
@@ -129,7 +160,6 @@ public class Main {
                     int sizeZ = mainCase.getSizeZ() - global_z;
 
                     newVolume1 = new Volume(global_x, global_y, global_z, sizeX, sizeY, sizeZ);
-                    System.out.println(newVolume1);
                     break;
                 }
                 case 1: {
@@ -143,7 +173,6 @@ public class Main {
                     int sizeZ = mainCase.getSizeZ() - global_z;
 
                     newVolume2 = new Volume(global_x, global_y, global_z, sizeX, sizeY, sizeZ);
-                    System.out.println(newVolume2);
                     break;
                 }
                 case 2: {
@@ -157,7 +186,6 @@ public class Main {
                     int sizeZ = mainCase.getSizeZ() - global_z;
 
                     newVolume3 = new Volume(global_x, global_y, global_z, sizeX, sizeY, sizeZ);
-                    System.out.println(newVolume3);
                     break;
                 }
             }
@@ -222,16 +250,16 @@ public class Main {
         //Now that we have created new volumes we need to fill each with
         //a new product, if it fits it should loop if no it should not
         //First work with volume 1 aka z direction
-        if(setProductInto(newVolume3)) {
-            algorithm(newVolume3);
+        if(setProductInto(newVolume1)) {
+            
         }
         //volume2
         if(setProductInto(newVolume2)) {
-            algorithm(newVolume2);
+            
         }
         //volume3
-        if(setProductInto(newVolume1)) {
-            algorithm(newVolume1);
+        if(setProductInto(newVolume3)) {
+            
         }
 
         //there is no way this is going to work
@@ -259,10 +287,12 @@ public class Main {
                     if(!innerProduct.isPlaced()) {
                         product = innerProduct;
                         volume.setProduct(product);
+                        product.setObjectVolume(volume);
                         product.setGlobal_x(volume.getGlobal_x());
                         product.setGlobal_y(volume.getGlobal_y());
                         product.setGlobal_z(volume.getGlobal_z());
                         product.setPlaced(true);
+                        productsToBeIterated.add(product);
                         productPlaced = true;
                         break outerloop;
                     }
