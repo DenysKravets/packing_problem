@@ -67,8 +67,7 @@ public class Main {
         cases.add(new Case(1, 14, 7, 7));
         */
 
-        System.out.println("Welcome to this 'working' peace of software!");
-        System.out.println("You should add at least one case for the program to work!");
+        System.out.println("You should add at least one case and one orderline for the program to work!");
 
         Scanner scanner = new Scanner(System.in);
         boolean start = false;
@@ -349,9 +348,6 @@ public class Main {
             
         }
 
-        //there is no way this is going to work
-        //しょうがないな
-        //いっしょに切腹しましょうか
         return true;
 
     }

@@ -67,8 +67,7 @@ public class Main {
         cases.add(new Case(1, 14, 7, 7));
         */
 
-        System.out.println("Welcome to this 'working' peace of software!");
-        System.out.println("You should add at least one case for the program to work!");
+        System.out.println("You should add at least one case and one orderline for the program to work!");
 
         Scanner scanner = new Scanner(System.in);
         boolean start = false;
@@ -208,7 +207,7 @@ public class Main {
         //So we set it up
         //Edit:
         //and vice versa so we can add volume to
-        //product, they now know about each other XD
+        //product, they now know about each other
         volume.setProduct(product);
         product.setObjectVolume(volume);
         //add product to the array so that it actually
@@ -349,9 +348,6 @@ public class Main {
             
         }
 
-        //there is no way this is going to work
-        //しょうがないな
-        //いっしょに切腹しましょうか
         return true;
 
     }
